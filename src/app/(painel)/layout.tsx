@@ -1,0 +1,2 @@
+import {redirect} from 'next/navigation';import {getSession} from '@/lib/auth';import {Sidebar} from '@/components/sidebar';import {Header} from '@/components/header';
+export default async function Layout({children}:{children:React.ReactNode}){const session=await getSession();if(!session)return redirect('/login');return <><Sidebar/><div className="min-h-screen md:ml-64"><Header name={session.name} role={session.role}/><main className="p-4 md:p-8">{children}</main></div></>}
