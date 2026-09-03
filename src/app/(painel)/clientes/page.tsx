@@ -1,0 +1,1 @@
+import {prisma} from '@/lib/prisma';import {CustomersView} from '@/components/customers-view';export const dynamic='force-dynamic';export default async function Page(){const customers=await prisma.customer.findMany({orderBy:{name:'asc'},include:{_count:{select:{vehicles:true,orders:true}}}});return <CustomersView customers={customers}/>}

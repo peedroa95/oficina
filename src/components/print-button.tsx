@@ -1,0 +1,1 @@
+'use client';import {Printer} from 'lucide-react';export function PrintButton(){return <button onClick={()=>window.print()} className="no-print btn btn-primary mb-6"><Printer size={17}/>Imprimir ou salvar em PDF</button>}

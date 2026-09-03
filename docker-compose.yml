@@ -1,0 +1,12 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment: { POSTGRES_USER: oficina, POSTGRES_PASSWORD: oficina, POSTGRES_DB: oficina }
+    volumes: [postgres_data:/var/lib/postgresql/data]
+    healthcheck: { test: ["CMD-SHELL", "pg_isready -U oficina"], interval: 5s, timeout: 5s, retries: 10 }
+  app:
+    build: .
+    ports: ["3000:3000"]
+    environment: { DATABASE_URL: "postgresql://oficina:oficina@db:5432/oficina?schema=public", AUTH_SECRET: "altere-esta-chave-no-ambiente-de-producao" }
+    depends_on: { db: { condition: service_healthy } }
+volumes: { postgres_data: {} }
