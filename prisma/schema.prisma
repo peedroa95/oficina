@@ -1,12 +1,11 @@
 // Schema do banco de dados - Sistema de Oficina Mecânica
-// Para migrar para PostgreSQL: troque provider para "postgresql" e ajuste DATABASE_URL no .env
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 

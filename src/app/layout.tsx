@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   description: "Controle interno da oficina mecânica",
 };
 
+// Todo o sistema depende de dados do banco em tempo real (sem cache estático).
+export const dynamic = "force-dynamic";
+
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const settings = await getSettings();
 

@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { PageHeader, Card, LinkButton, Badge, EmptyState } from "@/components/ui";
 import { formatCurrency } from "@/lib/format";
 
+export const dynamic = "force-dynamic";
+
 export default async function EstoquePage() {
   const products = await prisma.product.findMany({ orderBy: { name: "asc" } });
   const lowStock = products.filter((p) => p.quantity <= p.minStock);

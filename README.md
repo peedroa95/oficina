@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sistema Oficina
 
-## Getting Started
+Sistema web simples para controle interno de uma oficina mecânica: clientes, veículos, ordens de serviço, estoque, serviços e financeiro. Uso exclusivamente interno pela equipe da oficina.
 
-First, run the development server:
+## Tecnologias
+
+- Next.js 16 (App Router) + React + TypeScript
+- Tailwind CSS
+- PostgreSQL + Prisma ORM
+
+## Rodando localmente
+
+1. Tenha um PostgreSQL acessível e configure a variável `DATABASE_URL` no arquivo `.env` (veja `.env.example`).
+2. Instale as dependências:
+
+```bash
+npm install
+```
+
+3. Aplique as migrações do banco:
+
+```bash
+npx prisma migrate deploy
+```
+
+4. (Opcional) Popule dados de teste:
+
+```bash
+npm run seed
+```
+
+5. Suba o servidor de desenvolvimento:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy no Coolify
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+O projeto já inclui um `Dockerfile` pronto para produção (build multi-stage com `next build` em modo standalone + Prisma).
 
-## Learn More
+1. **Banco de dados**: no Coolify, crie um recurso de banco **PostgreSQL** (em *Resources → Databases*). Anote a *connection string* interna gerada.
+2. **Aplicação**: crie um novo recurso do tipo *Application*, apontando para este repositório Git, com build pack **Dockerfile**.
+3. **Variáveis de ambiente**: na aplicação, defina:
+   - `DATABASE_URL` = a connection string do banco Postgres criado no passo 1 (formato `postgresql://usuario:senha@host:5432/banco?schema=public`).
+4. **Porta**: a aplicação expõe a porta `3000` (já configurado no Dockerfile).
+5. Faça o deploy. No start do container, o `Dockerfile` roda `prisma migrate deploy` automaticamente antes de iniciar o servidor — as tabelas do banco são criadas/atualizadas sozinhas, sem passos manuais.
+6. (Opcional) Para popular dados de teste em produção, rode uma vez via terminal do Coolify (aba *Terminal* do recurso da aplicação):
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run seed
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Domínio e HTTPS
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Configure o domínio da oficina e ative o certificado (Let's Encrypt automático) diretamente na aba *Domains* do recurso da aplicação no Coolify.

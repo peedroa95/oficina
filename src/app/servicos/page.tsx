@@ -6,6 +6,8 @@ import { PageHeader, Card, LinkButton, EmptyState } from "@/components/ui";
 import { DeleteButton } from "@/components/DeleteButton";
 import { formatCurrency } from "@/lib/format";
 
+export const dynamic = "force-dynamic";
+
 export default async function ServicosPage() {
   const services = await prisma.service.findMany({ orderBy: { name: "asc" } });
 

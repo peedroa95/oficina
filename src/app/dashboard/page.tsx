@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { PageHeader, Card, StatCard, Badge, LinkButton, EmptyState } from "@/components/ui";
 import { formatCurrency, formatDate, STATUS_COLORS, STATUS_LABELS } from "@/lib/format";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
   const now = new Date();
   const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
